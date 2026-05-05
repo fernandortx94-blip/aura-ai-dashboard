@@ -8,6 +8,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { setActiveTool } from "@/lib/voiceNotify";
+import { stopSpeaking } from "@/lib/tts";
 
 const ORDER: ToolKey[] = ["chat", "image", "translate", "summarize", "code"];
 
@@ -17,7 +19,12 @@ const Index = () => {
 
   useEffect(() => {
     if (!emblaApi) return;
-    const onSelect = () => setActive(ORDER[emblaApi.selectedScrollSnap()]);
+    const onSelect = () => {
+      const k = ORDER[emblaApi.selectedScrollSnap()];
+      setActive(k);
+      setActiveTool(k);
+      stopSpeaking();
+    };
     emblaApi.on("select", onSelect);
     onSelect();
     return () => { emblaApi.off("select", onSelect); };
@@ -27,6 +34,8 @@ const Index = () => {
     const i = ORDER.indexOf(k);
     emblaApi?.scrollTo(i);
     setActive(k);
+    setActiveTool(k);
+    stopSpeaking();
   };
 
   const panels: Record<ToolKey, JSX.Element> = {
