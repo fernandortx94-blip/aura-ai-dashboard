@@ -1,5 +1,6 @@
 import { MessageSquare, ImageIcon, Languages, FileText, Code2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SettingsDialog } from "./SettingsDialog";
 
 export type ToolKey = "chat" | "image" | "translate" | "summarize" | "code";
 
@@ -53,6 +54,7 @@ export function Sidebar({ active, onSelect }: { active: ToolKey; onSelect: (k: T
         })}
       </nav>
       <div className="p-4 border-t border-border">
+        <div className="mb-2"><SettingsDialog /></div>
         <div className="rounded-xl p-4 bg-gradient-soft border border-primary/20">
           <p className="text-xs font-medium">Ferbot AI</p>
           <p className="text-[11px] text-muted-foreground mt-1">Groq · Pollinations · LibreTranslate</p>
