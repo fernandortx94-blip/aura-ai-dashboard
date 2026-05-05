@@ -10,6 +10,7 @@ import { Menu, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { setActiveTool } from "@/lib/voiceNotify";
 import { stopSpeaking } from "@/lib/tts";
+import { SettingsDialog } from "@/components/dashboard/SettingsDialog";
 
 const ORDER: ToolKey[] = ["chat", "image", "translate", "summarize", "code"];
 
@@ -107,6 +108,7 @@ const Index = () => {
                     </button>
                   );
                 })}
+                <div className="pt-3 border-t border-border mt-3"><SettingsDialog /></div>
               </nav>
             </SheetContent>
           </Sheet>
