@@ -64,7 +64,7 @@ const Index = () => {
   const idx = ORDER.indexOf(active);
 
   return (
-    <div className="min-h-screen w-full flex bg-background bg-gradient-radial">
+    <div className="h-screen w-full flex bg-background bg-gradient-radial overflow-hidden">
       <Sidebar active={active} onSelect={goTo} />
 
       <div className="flex-1 flex flex-col min-w-0">

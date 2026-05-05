@@ -50,13 +50,13 @@ export function ChatPanel({
   };
 
   return (
-    <div className="flex h-full flex-col">
-      <header className="px-6 md:px-10 py-6 border-b border-border">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        <p className="text-sm text-muted-foreground mt-1">{description}</p>
+    <div className="flex h-full min-h-0 flex-col">
+      <header className="px-4 md:px-10 py-3 md:py-4 border-b border-border shrink-0">
+        <h2 className="text-lg md:text-2xl font-semibold tracking-tight">{title}</h2>
+        <p className="text-xs md:text-sm text-muted-foreground mt-0.5 hidden md:block">{description}</p>
       </header>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 md:px-10 py-6 space-y-6">
+      <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-4 md:px-10 py-4 md:py-6 space-y-4 md:space-y-6">
         {messages.length === 0 && (
           <div className="h-full grid place-items-center">
             <div className="text-center max-w-md">
@@ -90,7 +90,7 @@ export function ChatPanel({
         ))}
       </div>
 
-      <div className="border-t border-border p-4 md:p-6 bg-background/60 backdrop-blur">
+      <div className="border-t border-border p-3 md:p-6 pb-10 md:pb-6 bg-background/60 backdrop-blur shrink-0">
         <div className="relative max-w-4xl mx-auto">
           <Textarea
             value={input}
@@ -102,7 +102,7 @@ export function ChatPanel({
               }
             }}
             placeholder={placeholder}
-            className="min-h-[60px] max-h-40 resize-none pr-14 bg-card border-border focus-visible:ring-primary/50"
+            className="min-h-[52px] max-h-32 resize-none pr-14 bg-card border-border focus-visible:ring-primary/50"
           />
           <Button
             onClick={send}
