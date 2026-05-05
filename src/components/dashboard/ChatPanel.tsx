@@ -6,6 +6,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { streamAI, type Msg } from "@/lib/aiStream";
 import { cn } from "@/lib/utils";
+import { speakResponse } from "@/lib/voiceNotify";
+import { stopSpeaking } from "@/lib/tts";
+import type { ToolKey } from "@/components/dashboard/Sidebar";
 
 export function ChatPanel({
   tool,
@@ -14,7 +17,7 @@ export function ChatPanel({
   placeholder,
   emptyHint,
 }: {
-  tool: string;
+  tool: ToolKey;
   title: string;
   description: string;
   placeholder: string;
@@ -28,6 +31,7 @@ export function ChatPanel({
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
+    stopSpeaking();
     const userMsg: Msg = { role: "user", content: text };
     setMessages((p) => [...p, userMsg]);
     setInput("");
@@ -45,7 +49,10 @@ export function ChatPanel({
         requestAnimationFrame(() => scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight }));
       },
       onError: (m) => toast.error(m),
-      onDone: () => setLoading(false),
+      onDone: () => {
+        setLoading(false);
+        if (acc.trim()) speakResponse(tool, title, acc);
+      },
     });
   };
 
