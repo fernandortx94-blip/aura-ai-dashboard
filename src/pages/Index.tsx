@@ -67,7 +67,7 @@ const Index = () => {
             <div className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-primary shadow-glow">
               <Sparkles className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-semibold">Nebula AI</span>
+            <span className="font-semibold">Ferbot AI</span>
           </div>
           <Sheet>
             <SheetTrigger asChild>
