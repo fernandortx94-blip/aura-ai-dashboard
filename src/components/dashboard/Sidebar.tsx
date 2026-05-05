@@ -1,13 +1,14 @@
-import { MessageSquare, ImageIcon, Languages, FileText, Sparkles } from "lucide-react";
+import { MessageSquare, ImageIcon, Languages, FileText, Code2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type ToolKey = "chat" | "image" | "translate" | "summarize";
+export type ToolKey = "chat" | "image" | "translate" | "summarize" | "code";
 
 export const TOOLS: { key: ToolKey; label: string; icon: any; desc: string }[] = [
   { key: "chat", label: "Chat Inteligente", icon: MessageSquare, desc: "Powered by Groq" },
   { key: "image", label: "Generador de Imágenes", icon: ImageIcon, desc: "Pollinations.ai" },
   { key: "translate", label: "Traductor", icon: Languages, desc: "LibreTranslate" },
   { key: "summarize", label: "Resumidor de Textos", icon: FileText, desc: "Sintetiza con Groq" },
+  { key: "code", label: "Asistente de Código", icon: Code2, desc: "Programación con Groq" },
 ];
 
 export function Sidebar({ active, onSelect }: { active: ToolKey; onSelect: (k: ToolKey) => void }) {
