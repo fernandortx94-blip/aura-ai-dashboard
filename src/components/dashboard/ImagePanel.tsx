@@ -3,6 +3,7 @@ import { Loader2, Wand2, Download, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { notifyComplete } from "@/lib/voiceNotify";
 
 export function ImagePanel() {
   const [prompt, setPrompt] = useState("");
@@ -23,6 +24,7 @@ export function ImagePanel() {
         img.src = url;
       });
       setImage(url);
+      notifyComplete("image", "el generador de imágenes ha terminado tu imagen.");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Error generando imagen");
     } finally {
