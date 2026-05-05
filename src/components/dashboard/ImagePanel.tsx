@@ -16,7 +16,6 @@ export function ImagePanel() {
     try {
       const seed = Math.floor(Math.random() * 1_000_000);
       const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
-      // Pre-cargar la imagen para detectar errores antes de mostrarla
       await new Promise<void>((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve();
@@ -32,54 +31,52 @@ export function ImagePanel() {
   };
 
   return (
-    <div className="flex h-full flex-col">
-      <header className="px-6 md:px-10 py-6 border-b border-border">
-        <h2 className="text-2xl font-semibold tracking-tight">Generador de Imágenes</h2>
-        <p className="text-sm text-muted-foreground mt-1">Describe lo que imaginas y lo creamos al instante.</p>
+    <div className="flex h-full min-h-0 flex-col overflow-hidden">
+      <header className="px-4 md:px-10 py-3 md:py-4 border-b border-border shrink-0">
+        <h2 className="text-lg md:text-2xl font-semibold tracking-tight">Generador de Imágenes</h2>
+        <p className="text-xs md:text-sm text-muted-foreground mt-0.5 hidden md:block">Describe lo que imaginas y lo creamos al instante.</p>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-6 md:p-10">
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <Textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Un astronauta surfeando una nebulosa púrpura, estilo cinematográfico..."
-              className="min-h-[110px] resize-none border-0 bg-transparent focus-visible:ring-0 p-0"
-            />
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
-              <p className="text-xs text-muted-foreground">Modelo: Pollinations.ai</p>
-              <Button onClick={generate} disabled={loading || !prompt.trim()} className="bg-gradient-primary hover:opacity-90 shadow-glow">
-                {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Wand2 className="h-4 w-4 mr-2" />}
-                Generar
-              </Button>
-            </div>
+      <div className="flex-1 min-h-0 p-3 md:p-6 flex flex-col gap-3 md:gap-4 overflow-hidden">
+        <div className="rounded-xl border border-border bg-card p-3 shrink-0">
+          <Textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Un astronauta surfeando una nebulosa púrpura..."
+            className="min-h-[60px] max-h-24 resize-none border-0 bg-transparent focus-visible:ring-0 p-0 text-sm"
+          />
+          <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
+            <p className="text-[10px] md:text-xs text-muted-foreground">Pollinations.ai</p>
+            <Button onClick={generate} disabled={loading || !prompt.trim()} size="sm" className="bg-gradient-primary hover:opacity-90 shadow-glow">
+              {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Wand2 className="h-4 w-4 mr-2" />}
+              Generar
+            </Button>
           </div>
+        </div>
 
-          <div className="aspect-square w-full rounded-2xl border border-border bg-gradient-soft overflow-hidden grid place-items-center relative">
-            {loading && (
-              <div className="text-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
-                <p className="text-sm text-muted-foreground mt-3">Creando tu imagen...</p>
-              </div>
-            )}
-            {!loading && image && (
-              <>
-                <img src={image} alt="Imagen generada" className="w-full h-full object-cover" />
-                <a href={image} download="ferbot-ai.png" target="_blank" rel="noreferrer" className="absolute top-3 right-3">
-                  <Button size="icon" variant="secondary" className="rounded-full">
-                    <Download className="h-4 w-4" />
-                  </Button>
-                </a>
-              </>
-            )}
-            {!loading && !image && (
-              <div className="text-center text-muted-foreground">
-                <ImageIcon className="h-10 w-10 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">Tu imagen aparecerá aquí</p>
-              </div>
-            )}
-          </div>
+        <div className="flex-1 min-h-0 rounded-xl border border-border bg-gradient-soft overflow-hidden grid place-items-center relative">
+          {loading && (
+            <div className="text-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
+              <p className="text-sm text-muted-foreground mt-3">Creando tu imagen...</p>
+            </div>
+          )}
+          {!loading && image && (
+            <>
+              <img src={image} alt="Imagen generada" className="w-full h-full object-contain" />
+              <a href={image} download="ferbot-ai.png" target="_blank" rel="noreferrer" className="absolute top-3 right-3">
+                <Button size="icon" variant="secondary" className="rounded-full">
+                  <Download className="h-4 w-4" />
+                </Button>
+              </a>
+            </>
+          )}
+          {!loading && !image && (
+            <div className="text-center text-muted-foreground">
+              <ImageIcon className="h-10 w-10 mx-auto mb-2 opacity-50" />
+              <p className="text-sm">Tu imagen aparecerá aquí</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
