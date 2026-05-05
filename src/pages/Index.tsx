@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Sidebar, TOOLS, type ToolKey } from "@/components/dashboard/Sidebar";
 import { ChatPanel } from "@/components/dashboard/ChatPanel";
 import { ImagePanel } from "@/components/dashboard/ImagePanel";
+import { TranslatePanel } from "@/components/dashboard/TranslatePanel";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Sparkles } from "lucide-react";
@@ -23,26 +24,8 @@ const Index = () => {
         );
       case "image":
         return <ImagePanel />;
-      case "code":
-        return (
-          <ChatPanel
-            tool="code"
-            title="Asistente de Código"
-            description="Escribe, depura y entiende código en cualquier lenguaje."
-            placeholder="Pega tu código o describe lo que necesitas..."
-            emptyHint="Pídeme que escriba un componente, depure un error o explique un snippet."
-          />
-        );
       case "translate":
-        return (
-          <ChatPanel
-            tool="translate"
-            title="Traductor"
-            description="Traduce textos a cualquier idioma manteniendo el tono."
-            placeholder='Ej: "Traduce al japonés: Buenos días, ¿cómo estás?"'
-            emptyHint="Indica el idioma destino y el texto. Detecto automáticamente el idioma de origen."
-          />
-        );
+        return <TranslatePanel />;
       case "summarize":
         return (
           <ChatPanel
