@@ -7,9 +7,7 @@ const corsHeaders = {
 
 const SYSTEM_PROMPTS: Record<string, string> = {
   chat: "Eres un asistente de IA inteligente, claro y conciso. Responde siempre en español a menos que el usuario escriba en otro idioma.",
-  code: "Eres un asistente de programación experto. Explica y entrega código limpio en bloques markdown ```lang. Sé preciso y breve.",
-  translate: "Eres un traductor profesional. Detecta el idioma de origen y traduce al idioma solicitado por el usuario manteniendo tono y matices. Devuelve solo la traducción, sin explicaciones.",
-  summarize: "Eres un experto en resumir textos. Devuelve un resumen claro en bullets clave + un párrafo final con la idea principal. Mantén el idioma del texto original.",
+  summarize: "Eres un experto en resumir textos. Devuelve un resumen claro con bullets de los puntos clave seguido de un párrafo final con la idea principal. Mantén el idioma del texto original.",
 };
 
 serve(async (req) => {
@@ -17,39 +15,34 @@ serve(async (req) => {
 
   try {
     const { tool, messages } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY no configurada");
+    const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
+    if (!GROQ_API_KEY) throw new Error("GROQ_API_KEY no configurada");
 
     const system = SYSTEM_PROMPTS[tool] ?? SYSTEM_PROMPTS.chat;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${GROQ_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "llama-3.3-70b-versatile",
         messages: [{ role: "system", content: system }, ...messages],
         stream: true,
       }),
     });
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Límite de solicitudes alcanzado, intenta más tarde." }), {
-          status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Créditos agotados. Añade fondos en tu workspace de Lovable AI." }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
       const t = await response.text();
-      console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: "Error del gateway de IA" }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      console.error("Groq error:", response.status, t);
+      const msg = response.status === 429
+        ? "Límite de Groq alcanzado, intenta más tarde."
+        : response.status === 401
+          ? "GROQ_API_KEY inválida."
+          : "Error de Groq.";
+      return new Response(JSON.stringify({ error: msg }), {
+        status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
