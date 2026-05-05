@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Loader2, Wand2, Download, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export function ImagePanel() {
@@ -14,18 +13,22 @@ export function ImagePanel() {
     if (!prompt.trim() || loading) return;
     setLoading(true);
     setImage(null);
-    const { data, error } = await supabase.functions.invoke("ai-image", { body: { prompt } });
-    setLoading(false);
-    if (error) {
-      toast.error(error.message || "Error generando imagen");
-      return;
+    try {
+      const seed = Math.floor(Math.random() * 1_000_000);
+      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
+      // Pre-cargar la imagen para detectar errores antes de mostrarla
+      await new Promise<void>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error("No se pudo generar la imagen"));
+        img.src = url;
+      });
+      setImage(url);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Error generando imagen");
+    } finally {
+      setLoading(false);
     }
-    if (data?.error) {
-      toast.error(data.error);
-      return;
-    }
-    if (data?.imageUrl) setImage(data.imageUrl);
-    else toast.error("No se recibió imagen");
   };
 
   return (
@@ -45,7 +48,7 @@ export function ImagePanel() {
               className="min-h-[110px] resize-none border-0 bg-transparent focus-visible:ring-0 p-0"
             />
             <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
-              <p className="text-xs text-muted-foreground">Modelo: Nano Banana</p>
+              <p className="text-xs text-muted-foreground">Modelo: Pollinations.ai</p>
               <Button onClick={generate} disabled={loading || !prompt.trim()} className="bg-gradient-primary hover:opacity-90 shadow-glow">
                 {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Wand2 className="h-4 w-4 mr-2" />}
                 Generar
@@ -63,7 +66,7 @@ export function ImagePanel() {
             {!loading && image && (
               <>
                 <img src={image} alt="Imagen generada" className="w-full h-full object-cover" />
-                <a href={image} download="nebula-ai.png" className="absolute top-3 right-3">
+                <a href={image} download="ferbot-ai.png" target="_blank" rel="noreferrer" className="absolute top-3 right-3">
                   <Button size="icon" variant="secondary" className="rounded-full">
                     <Download className="h-4 w-4" />
                   </Button>
