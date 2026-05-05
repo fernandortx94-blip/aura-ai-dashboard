@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { speakResponse } from "@/lib/voiceNotify";
 
 const LANGS: { code: string; label: string }[] = [
   { code: "auto", label: "Detectar idioma" },
@@ -58,6 +59,7 @@ export function TranslatePanel() {
         if (data?.translatedText) {
           setOutput(data.translatedText);
           setLoading(false);
+          speakResponse("translate", "Traductor", data.translatedText);
           return;
         }
         lastErr = "Respuesta vacía";
