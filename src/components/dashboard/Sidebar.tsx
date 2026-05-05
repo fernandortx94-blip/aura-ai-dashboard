@@ -1,14 +1,13 @@
-import { MessageSquare, ImageIcon, Code2, Languages, FileText, Sparkles } from "lucide-react";
+import { MessageSquare, ImageIcon, Languages, FileText, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type ToolKey = "chat" | "image" | "code" | "translate" | "summarize";
+export type ToolKey = "chat" | "image" | "translate" | "summarize";
 
 export const TOOLS: { key: ToolKey; label: string; icon: any; desc: string }[] = [
-  { key: "chat", label: "Chat Inteligente", icon: MessageSquare, desc: "Conversa con la IA" },
-  { key: "image", label: "Generador de Imágenes", icon: ImageIcon, desc: "Crea visuales únicos" },
-  { key: "code", label: "Asistente de Código", icon: Code2, desc: "Escribe y depura código" },
-  { key: "translate", label: "Traductor", icon: Languages, desc: "Traduce a cualquier idioma" },
-  { key: "summarize", label: "Resumidor de Textos", icon: FileText, desc: "Sintetiza documentos" },
+  { key: "chat", label: "Chat Inteligente", icon: MessageSquare, desc: "Powered by Groq" },
+  { key: "image", label: "Generador de Imágenes", icon: ImageIcon, desc: "Pollinations.ai" },
+  { key: "translate", label: "Traductor", icon: Languages, desc: "LibreTranslate" },
+  { key: "summarize", label: "Resumidor de Textos", icon: FileText, desc: "Sintetiza con Groq" },
 ];
 
 export function Sidebar({ active, onSelect }: { active: ToolKey; onSelect: (k: ToolKey) => void }) {
@@ -54,8 +53,8 @@ export function Sidebar({ active, onSelect }: { active: ToolKey; onSelect: (k: T
       </nav>
       <div className="p-4 border-t border-border">
         <div className="rounded-xl p-4 bg-gradient-soft border border-primary/20">
-          <p className="text-xs font-medium">Powered by Lovable AI</p>
-          <p className="text-[11px] text-muted-foreground mt-1">Gemini · GPT-5 · Nano Banana</p>
+          <p className="text-xs font-medium">Ferbot AI</p>
+          <p className="text-[11px] text-muted-foreground mt-1">Groq · Pollinations · LibreTranslate</p>
         </div>
       </div>
     </aside>
