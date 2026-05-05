@@ -70,44 +70,42 @@ export function TranslatePanel() {
   };
 
   return (
-    <div className="flex h-full flex-col">
-      <header className="px-6 md:px-10 py-6 border-b border-border">
-        <h2 className="text-2xl font-semibold tracking-tight">Traductor</h2>
-        <p className="text-sm text-muted-foreground mt-1">Traducción gratuita con LibreTranslate.</p>
+    <div className="flex h-full min-h-0 flex-col overflow-hidden">
+      <header className="px-4 md:px-10 py-3 md:py-4 border-b border-border shrink-0">
+        <h2 className="text-lg md:text-2xl font-semibold tracking-tight">Traductor</h2>
+        <p className="text-xs md:text-sm text-muted-foreground mt-0.5 hidden md:block">Traducción gratuita con LibreTranslate.</p>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-6 md:p-10">
-        <div className="max-w-5xl mx-auto space-y-4">
-          <div className="flex items-center gap-2 flex-wrap">
-            <Select value={source} onValueChange={setSource}>
-              <SelectTrigger className="w-[180px] bg-card border-border"><SelectValue /></SelectTrigger>
-              <SelectContent>{LANGS.map(l => <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>)}</SelectContent>
-            </Select>
-            <Button variant="ghost" size="icon" onClick={swap} className="rounded-full"><ArrowRightLeft className="h-4 w-4" /></Button>
-            <Select value={target} onValueChange={setTarget}>
-              <SelectTrigger className="w-[180px] bg-card border-border"><SelectValue /></SelectTrigger>
-              <SelectContent>{LANGS.filter(l => l.code !== "auto").map(l => <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>)}</SelectContent>
-            </Select>
-          </div>
+      <div className="flex-1 min-h-0 p-3 md:p-6 flex flex-col gap-3 overflow-hidden">
+        <div className="flex items-center gap-2 shrink-0">
+          <Select value={source} onValueChange={setSource}>
+            <SelectTrigger className="flex-1 md:w-[180px] md:flex-none bg-card border-border h-9"><SelectValue /></SelectTrigger>
+            <SelectContent>{LANGS.map(l => <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>)}</SelectContent>
+          </Select>
+          <Button variant="ghost" size="icon" onClick={swap} className="rounded-full shrink-0 h-9 w-9"><ArrowRightLeft className="h-4 w-4" /></Button>
+          <Select value={target} onValueChange={setTarget}>
+            <SelectTrigger className="flex-1 md:w-[180px] md:flex-none bg-card border-border h-9"><SelectValue /></SelectTrigger>
+            <SelectContent>{LANGS.filter(l => l.code !== "auto").map(l => <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>)}</SelectContent>
+          </Select>
+        </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Escribe el texto a traducir..."
-              className="min-h-[260px] resize-none bg-card border-border"
-            />
-            <div className="min-h-[260px] rounded-md border border-border bg-card p-3 text-sm whitespace-pre-wrap">
-              {loading ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : (output || <span className="text-muted-foreground">La traducción aparecerá aquí...</span>)}
-            </div>
+        <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <Textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Escribe el texto a traducir..."
+            className="resize-none bg-card border-border h-full min-h-0"
+          />
+          <div className="rounded-md border border-border bg-card p-3 text-sm whitespace-pre-wrap overflow-y-auto h-full min-h-0">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : (output || <span className="text-muted-foreground">La traducción aparecerá aquí...</span>)}
           </div>
+        </div>
 
-          <div className="flex justify-end">
-            <Button onClick={translate} disabled={loading || !input.trim()} className="bg-gradient-primary hover:opacity-90 shadow-glow">
-              {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Languages className="h-4 w-4 mr-2" />}
-              Traducir
-            </Button>
-          </div>
+        <div className="flex justify-end shrink-0">
+          <Button onClick={translate} disabled={loading || !input.trim()} size="sm" className="bg-gradient-primary hover:opacity-90 shadow-glow">
+            {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Languages className="h-4 w-4 mr-2" />}
+            Traducir
+          </Button>
         </div>
       </div>
     </div>
