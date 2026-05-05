@@ -11,19 +11,21 @@ import { cn } from "@/lib/utils";
 import { setActiveTool } from "@/lib/voiceNotify";
 import { stopSpeaking } from "@/lib/tts";
 import { SettingsDialog } from "@/components/dashboard/SettingsDialog";
+import { SettingsPanel } from "@/components/dashboard/SettingsPanel";
 
-const ORDER: ToolKey[] = ["chat", "image", "translate", "summarize", "code"];
+type ScreenKey = ToolKey | "settings";
+const ORDER: ScreenKey[] = ["settings", "chat", "image", "translate", "summarize", "code"];
 
 const Index = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 25 });
-  const [active, setActive] = useState<ToolKey>("chat");
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 25, startIndex: 1 });
+  const [active, setActive] = useState<ScreenKey>("chat");
 
   useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => {
       const k = ORDER[emblaApi.selectedScrollSnap()];
       setActive(k);
-      setActiveTool(k);
+      if (k !== "settings") setActiveTool(k);
       stopSpeaking();
     };
     emblaApi.on("select", onSelect);
@@ -31,15 +33,16 @@ const Index = () => {
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
 
-  const goTo = (k: ToolKey) => {
+  const goTo = (k: ScreenKey) => {
     const i = ORDER.indexOf(k);
     emblaApi?.scrollTo(i);
     setActive(k);
-    setActiveTool(k);
+    if (k !== "settings") setActiveTool(k);
     stopSpeaking();
   };
 
-  const panels: Record<ToolKey, JSX.Element> = {
+  const panels: Record<ScreenKey, JSX.Element> = {
+    settings: <SettingsPanel />,
     chat: (
       <ChatPanel
         tool="chat"
@@ -75,7 +78,7 @@ const Index = () => {
 
   return (
     <div className="h-screen w-full flex bg-background bg-gradient-radial overflow-hidden">
-      <Sidebar active={active} onSelect={goTo} />
+      <Sidebar active={active === "settings" ? "chat" : active} onSelect={goTo} />
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
