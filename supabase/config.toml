@@ -1,1 +1,7 @@
 project_id = "rfvqhqoylcvhcvidfxsd"
+
+[functions.ai-tool]
+verify_jwt = false
+
+[functions.ai-image]
+verify_jwt = false
