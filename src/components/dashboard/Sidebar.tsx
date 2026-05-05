@@ -19,7 +19,7 @@ export function Sidebar({ active, onSelect }: { active: ToolKey; onSelect: (k: T
           <Sparkles className="h-5 w-5 text-primary-foreground" />
         </div>
         <div>
-          <h1 className="text-base font-semibold tracking-tight">Nebula AI</h1>
+          <h1 className="text-base font-semibold tracking-tight">Ferbot AI</h1>
           <p className="text-xs text-muted-foreground">Dashboard multifunción</p>
         </div>
       </div>
