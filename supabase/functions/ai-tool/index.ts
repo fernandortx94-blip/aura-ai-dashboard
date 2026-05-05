@@ -8,6 +8,7 @@ const corsHeaders = {
 const SYSTEM_PROMPTS: Record<string, string> = {
   chat: "Eres un asistente de IA inteligente, claro y conciso. Responde siempre en español a menos que el usuario escriba en otro idioma.",
   summarize: "Eres un experto en resumir textos. Devuelve un resumen claro con bullets de los puntos clave seguido de un párrafo final con la idea principal. Mantén el idioma del texto original.",
+  code: "Eres un asistente experto en programación. Explica de forma clara, incluye ejemplos de código en bloques markdown con el lenguaje correcto, y señala buenas prácticas. Responde en español salvo que el usuario use otro idioma.",
 };
 
 serve(async (req) => {
